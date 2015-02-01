@@ -63,6 +63,7 @@ def find_all_ORFs_both_strands(dna):
 ##    # TODO: implement this
 ##    pass
 
+<<<<<<< HEAD
 ##def gene_finder(dna, threshold):
 ##    """ Returns the amino acid sequences coded by all genes that have an ORF
 ##        larger than the specified threshold.
@@ -75,6 +76,24 @@ def find_all_ORFs_both_strands(dna):
 ##    """
 ##    # TODO: implement this
 ##    pass
+=======
+        >>> coding_strand_to_AA("ATGCGA")
+        'MR'
+        >>> coding_strand_to_AA("ATGCCCGCTTT")
+        'MPA'
+    """
+    # TODO: implement this
+    pass
+
+def gene_finder(dna):
+    """ Returns the amino acid sequences that are likely coded by the specified dna
+        
+        dna: a DNA sequence
+        returns: a list of all amino acid sequences coded by the sequence dna.
+    """
+    # TODO: implement this
+    pass
+>>>>>>> daf89177ec30bf2d3eb6f14c538e0a94cf857a77
 
 if __name__ == "__main__":
     import doctest
