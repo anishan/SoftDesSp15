@@ -148,9 +148,12 @@ def longest_ORF(dna):
     >>> longest_ORF("ATGCGAATGTAGCATCAAA")
     'ATGCTACATTCGCAT'
     """
-    # TODO: implement this
-    pass
-
+    all_orfs = find_all_ORFs_both_strands(dna)
+    longest_index = 0
+    for i in range(len(all_orfs)):
+        if len(all_orfs[i]) > len(all_orfs[longest_index]):
+            longest_index = i
+    return all_orfs[longest_index]
 
 def longest_ORF_noncoding(dna, num_trials):
     """ Computes the maximum length of the longest ORF over num_trials shuffles
@@ -159,8 +162,13 @@ def longest_ORF_noncoding(dna, num_trials):
         dna: a DNA sequence
         num_trials: the number of random shuffles
         returns: the maximum length longest ORF """
-    # TODO: implement this
-    pass
+    longest = 0
+    for i in xrange(num_trials):
+        shuffled = shuffle_string(dna)
+        longest_shuffled = longest_ORF(shuffled) #longest ORF in shuffled
+        if len(longest_shuffled) > longest:
+            longest = len(longest_shuffled) #reset longest value
+    return longest
 
 def coding_strand_to_AA(dna):
     """ Computes the Protein encoded by a sequence of DNA.  This function
@@ -176,8 +184,14 @@ def coding_strand_to_AA(dna):
         >>> coding_strand_to_AA("ATGCCCGCTTT")
         'MPA'
     """
-    # TODO: implement this
-    pass
+    protein = ""
+    i = 0
+    while i < (len(dna) - 2):
+        codon = dna[i: i + 3]
+        amino_acid = aa_table[codon]
+        protein = protein + amino_acid
+        i += 3
+    return protein
 
 def gene_finder(dna):
     """ Returns the amino acid sequences that are likely coded by the specified dna
@@ -185,8 +199,19 @@ def gene_finder(dna):
         dna: a DNA sequence
         returns: a list of all amino acid sequences coded by the sequence dna.
     """
-    # TODO: implement this
-    pass
+    # Find length threshold
+    threshold = longest_ORF_noncoding(dna, 1500)
+
+    # Find all open reading frames, both strands
+    all_orfs = find_all_ORFs_both_strands(dna)
+
+    # Get list of ORFs longer than threshold
+    long_orfs = [i for i in all_orfs if len(i) > threshold]
+
+    # return list of amino acids
+    amino_acids = [coding_strand_to_AA(i) for i in long_orfs]
+    return amino_acids
+    
 
 if __name__ == "__main__":
     import doctest
