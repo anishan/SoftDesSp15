@@ -149,11 +149,11 @@ def longest_ORF(dna):
     'ATGCTACATTCGCAT'
     """
     all_orfs = find_all_ORFs_both_strands(dna)
-    longest_index = 0
-    for i in range(len(all_orfs)):
-        if len(all_orfs[i]) > len(all_orfs[longest_index]):
-            longest_index = i
-    return all_orfs[longest_index]
+    longest_orf = ""
+    for orf in all_orfs:
+        if len(orf) > len(longest_orf):
+            longest_orf = orf
+    return longest_orf
 
 def longest_ORF_noncoding(dna, num_trials):
     """ Computes the maximum length of the longest ORF over num_trials shuffles
@@ -185,12 +185,10 @@ def coding_strand_to_AA(dna):
         'MPA'
     """
     protein = ""
-    i = 0
-    while i < (len(dna) - 2):
+    for i in xrange(0, len(dna) - 2, 3):
         codon = dna[i: i + 3]
         amino_acid = aa_table[codon]
         protein = protein + amino_acid
-        i += 3
     return protein
 
 def gene_finder(dna):
