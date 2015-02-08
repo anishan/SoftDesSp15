@@ -203,11 +203,9 @@ def gene_finder(dna):
     # Find all open reading frames, both strands
     all_orfs = find_all_ORFs_both_strands(dna)
 
-    # Get list of ORFs longer than threshold
-    long_orfs = [i for i in all_orfs if len(i) > threshold]
-
-    # return list of amino acids
-    amino_acids = [coding_strand_to_AA(i) for i in long_orfs]
+    # Get list of ORFs longer than threshold and return list of amino acids
+    amino_acids = [coding_strand_to_AA(orf) for orf in all_orfs if len(orf) > threshold]
+    
     return amino_acids
     
 
