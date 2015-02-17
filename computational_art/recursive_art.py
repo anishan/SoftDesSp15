@@ -1,4 +1,6 @@
-""" TODO: Put your header comment here """
+"""
+@author: Anisha Nakagawa
+"""
 
 import random
 from PIL import Image
@@ -17,32 +19,15 @@ def build_random_function(min_depth, max_depth):
                  these functions)
     """
     depth = random.randrange(min_depth, max_depth)
+    functions = ["x", "y", "prod", "avg", "cos_pi", "sin_pi", "square", "neg"]
     # Base case:
     if depth == 1:
         # return either x or y
-        if random.randrange(0, 2) == 0:
-            return ["x"]
-        else:
-            return ["y"]
+        return [functions[random.randrange(0, 2)]]
     # Recursive case:
     else:
-        function_id = random.randrange(0, 8) # There are 8 functions
-        if function_id == 0:
-            return ["prod", build_random_function(depth - 1, depth), build_random_function(depth - 1, depth)]
-        elif function_id == 1:
-            return ["avg", build_random_function(depth - 1, depth), build_random_function(depth - 1, depth)]
-        elif function_id == 2:
-            return ["cos_pi", build_random_function(depth - 1, depth)]
-        elif function_id == 3:
-            return ["sin_pi", build_random_function(depth - 1, depth)]
-        elif function_id == 4:
-            return ["x", build_random_function(depth - 1, depth), build_random_function(depth - 1, depth)]
-        elif function_id == 5:
-            return ["y", build_random_function(depth - 1, depth), build_random_function(depth - 1, depth)]
-        elif function_id == 6:
-            return ["square", build_random_function(depth - 1, depth)]
-        elif function_id == 7:
-            return ["neg", build_random_function(depth - 1, depth)]
+        function_id = random.randrange(0, len(functions))
+        return [functions[function_id], build_random_function(depth - 1, depth), build_random_function(depth - 1, depth)]
 
 
 
@@ -214,4 +199,4 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art("myart3.png")
+    generate_art("myart5.png")
