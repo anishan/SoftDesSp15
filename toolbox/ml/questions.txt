@@ -1,0 +1,20 @@
+Questions Based on Machine Learning Toolbox
+
+1) What is the general trend in the curve?
+
+In general, as the percentage of data used for training increases, the accuracy of the model on the test set also increases. This is because as the model trains on a larger sample size, at can be more accurate at predicting the remaining items in the test set because it has a more comprehensive range of data on which to train. The larger sample sizes also will tend to have a better representation of the overall data set.
+
+
+2) Are there parts of the curve that appear to be noisier than others?  Why?
+
+The curve is 'noisier' at low percentages of data used for training. This is because at low percentages, the sample of data used for testing can vary greatly.Depending on the random sampling, the data can either be very well representative of the entire data set, or only representitave of a certain subset. Because there can be very different ranges of the train data at low percentages, it produces more noise.
+
+
+3) How many trials do you need to get a smooth curve?
+
+50 trials will usually be enough to see a continually increasing trend in the accuracy of the data, but 100 trials gives a much smoother curve (although it takes significantly longer to run. If you don't mind waiting, 200 trials gives an even smoother curve, with only a few slight dips in the trend.
+
+
+4) Try different values for C (by changing LogisticRegression(C=10**-10)). What happens?  
+
+The argument C controls the strength of regulation (where a lower value means higher regulation). As C increases, the graph of the accuracy become less linear and becomes more like the graph of x^1/2. As C increase, the runtime of the program also increases.
