@@ -13,12 +13,15 @@ https://sites.google.com/site/sd15spring/home/project-toolbox/evolutionary-algor
 
 import random
 import string
+import time
 
 import numpy    # Used for statistics
 from deap import algorithms
 from deap import base
 from deap import tools
 
+import numpy as np
+import matplotlib.pyplot as plt
 
 #-----------------------------------------------------------------------------
 # Global variables
@@ -29,7 +32,7 @@ from deap import tools
 VALID_CHARS = string.ascii_uppercase + " "
 
 # Control whether all Messages are printed as they are evaluated
-VERBOSE = True
+VERBOSE = False
 
 
 #-----------------------------------------------------------------------------
@@ -95,6 +98,37 @@ class Message(list):
 # TODO: Implement levenshtein_distance function (see Day 9 in-class exercises)
 # HINT: Now would be a great time to implement memoization if you haven't
 
+known = {}
+
+def levenshtein_distance(s1,s2):
+    # Base Cases
+    if len(s1) == 0:
+            return len(s2)
+    if len(s2) == 0:
+            return len(s1)
+
+    # Memoize!
+    tuple1 = (s1[1:],s2[1:])
+    tuple2 = (s1[1:],s2)
+    tuple3 = (s1,s2[1:])
+    if tuple1 in known:
+        ld1 = known[tuple1]
+    else:
+        ld1 = levenshtein_distance(s1[1:],s2[1:])
+        known[tuple1] = ld1
+    if tuple2 in known:
+        ld2 = known[tuple2]
+    else:
+        ld2 = levenshtein_distance(s1[1:],s2)
+        known[tuple2] = ld2
+    if tuple3 in known:
+        ld3 = known[tuple3]
+    else:
+        ld3 = levenshtein_distance(s1,s2[1:])
+        known[tuple3] = ld3
+    
+    return min([int(s1[0] != s2[0]) + ld1, 1 + ld2, 1 + ld3])
+
 def evaluate_text(message, goal_text, verbose=VERBOSE):
     """
     Given a Message and a goal_text string, return the Levenshtein distance
@@ -119,10 +153,22 @@ def mutate_text(message, prob_ins=0.05, prob_del=0.05, prob_sub=0.05):
         Substitution:   Replace one character of the Message with a random
                         (legal) character
     """
-
+    # Insertion
     if random.random() < prob_ins:
-        # TODO: Implement insertion-type mutation
-        pass
+        index = random.randrange(len(message))
+        char = VALID_CHARS[random.randrange(len(VALID_CHARS))]
+        message.insert(index, char)
+
+    # Deletion
+    if random.random() < prob_del:
+        index = random.randrange(len(message))
+        message.pop(index)
+
+    # Substitution
+    if random.random() < prob_sub:
+        index = random.randrange(len(message))
+        char = VALID_CHARS[random.randrange(len(VALID_CHARS))]
+        message[index] = char
 
     # TODO: Also implement deletion and substitution mutations
     # HINT: Message objects inherit from list, so they also inherit
@@ -195,6 +241,16 @@ def evolve_string(text):
 # Run if called from the command line
 #-----------------------------------------------------------------------------
 
+
+def get_min_distance(string):
+    last_line = string.splitlines()[-1]
+    return int(last_line.split()[4])
+    
+def graph(d):
+    for s in d:
+        plt.plot(s, d[s], 'bo')
+    plt.show()
+
 if __name__ == "__main__":
 
     # Get goal message from command line (optional)
@@ -216,3 +272,11 @@ if __name__ == "__main__":
 
     # Run evolutionary algorithm
     pop, log = evolve_string(goal)
+
+    # Loop through to test parameters
+    # Required modifying inputs from evolve_string()
+##    d = dict()
+##    for i in range(10, 600, 10):
+##        pop, log = evolve_string(goal, i)
+##        d[i] = get_min_distance(str(log))
+##    graph(d)
