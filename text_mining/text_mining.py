@@ -12,7 +12,7 @@ about the same topic.
 
 # Import Packages
 # To get html from websites:
-from pattern.web import URL, plaintext, strip_between
+from pattern.web import URL, plaintext, strip_between, Google
 # For language analysis:
 from pattern.en import sentiment
 # For graphing
@@ -198,7 +198,15 @@ kp_websites = {'kp_Fox.txt': 'http://www.foxnews.com/politics/2015/02/24/obama-t
 #print analyze('State of the Union', su_text, 'bo')
 
 # Keystone Pipeline Veto
-kp_text = read_files(kp_websites.keys())
-print analyze('Keystone Pipeline Veto', kp_text, 'ro')
+#kp_text = read_files(kp_websites.keys())
+#print analyze('Keystone Pipeline Veto', kp_text, 'ro')
 
-plt.show()
+#plt.show()
+
+g = Google()
+for result in g.search('Olin College'):
+    print result.url
+    print result.text
+
+
+
